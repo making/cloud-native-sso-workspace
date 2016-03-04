@@ -18,8 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -37,7 +35,7 @@ public class UiApplication extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.antMatcher("/**").authorizeRequests()
 				.antMatchers("/index.html", "/home.html", "/").permitAll().anyRequest()
-				.authenticated().and().csrf().csrfTokenRepository(csrfTokenRepository())
+				.authenticated().and().csrf()
 				.and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
 	}
 
@@ -61,11 +59,4 @@ public class UiApplication extends WebSecurityConfigurerAdapter {
 			}
 		};
 	}
-
-	private CsrfTokenRepository csrfTokenRepository() {
-		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-		repository.setHeaderName("X-XSRF-TOKEN");
-		return repository;
-	}
-
 }

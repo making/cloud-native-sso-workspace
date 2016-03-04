@@ -1,10 +1,11 @@
-angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
+angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider, $httpProvider) {
 
 	$routeProvider.when('/', {
 		templateUrl : 'home.html',
 		controller : 'home'
 	}).otherwise('/');
 
+	$httpProvider.defaults.xsrfHeaderName = 'X-CSRF-Token';
 }).controller('navigation',
 
 function($rootScope, $scope, $http, $location, $route) {
